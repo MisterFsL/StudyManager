@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">StudyManager</string>
+    <string name="log_in">Log in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="signIn">Sign in</string>
+    <string name="remember_me">Remember me</string>
+    <string name="my_lessons">My Lessons</string>
+    <string name="calendar">Calendar</string>
+    <string name="log_off">Log off</string>
+</resources>
