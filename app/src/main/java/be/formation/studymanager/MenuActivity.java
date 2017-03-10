@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,8 +20,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        tvUser = (TextView) findViewById(R.id.textView);
+        tvUser = (TextView) findViewById(R.id.tv_current_user);
         btnLogoff= (Button) findViewById(R.id.btn_logoff);
+
         btnLogoff.setOnClickListener(this);
 
         mAuth=mAuth.getInstance();
