@@ -14,9 +14,15 @@ import be.formation.studymanager.R;
  */
 public class CalendarFragment extends Fragment {
 
+    private static CalendarFragment instance;
 
     public CalendarFragment() {
-        // Required empty public constructor
+    }
+
+    public static CalendarFragment getInstance(){
+        if(instance==null)
+            instance=new CalendarFragment();
+        return instance;
     }
 
 
