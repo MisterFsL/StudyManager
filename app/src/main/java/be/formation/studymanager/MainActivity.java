@@ -20,20 +20,31 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Password;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,Validator.ValidationListener{
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private final String TAG = "MainActivity";
     private Button btnSignin;
     private Button btnSingup;
-    private Button btnGoogle;
+    @NotEmpty
+    @Email
     private EditText etEmail;
+    @Password
     private EditText etPassword;
     private ImageView logo;
     private ProgressBar progress;
     private CheckBox remember;
+    private Validator validator;
+    private boolean validate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnSignin.setOnClickListener(this);
         btnSingup.setOnClickListener(this);
         //endregion
+        validate=false;
+        validator= new Validator(this);
+        validator.setValidationListener(this);
         getPreferences();
         //region firebase
         mAuth = FirebaseAuth.getInstance();
@@ -91,8 +105,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void createAccount(String email,String password){
         //TODO Check mail & adress
-        if(email != null && password !=null &&
-                !email.isEmpty() && !password.isEmpty()) {
+        validator.validate();
+        if(validate) {
             startLoading();
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -111,14 +125,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             // ...
                         }
                     });
-        } else {
-            Toast.makeText(this, "NULL", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void signIn(String email,String password){
-        if(email != null && password !=null &&
-                !email.isEmpty() && !password.isEmpty()) {
+        validator.validate();
+        if(validate) {
             startLoading();
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -139,8 +151,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             // ...
                         }
                     });
-        }else {
-            Toast.makeText(this, "NULL", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -199,5 +209,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnSignin.setEnabled(true);
         logo.setVisibility(View.VISIBLE);
         progress.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onValidationSucceeded() {
+        validate=true;
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        validate=false;
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(this);
+
+            // Display error messages ;)
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

@@ -50,7 +50,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         btnLogoff.setOnClickListener(this);
 
         mAuth = mAuth.getInstance();
-        tvUser.setText(mAuth.getCurrentUser().getEmail());
+        if(mAuth.getCurrentUser()!=null)
+            tvUser.setText(mAuth.getCurrentUser().getEmail());
+        else
+            finish();
 
     }
 

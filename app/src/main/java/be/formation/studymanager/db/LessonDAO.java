@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +25,11 @@ public class LessonDAO {
 
     public static final String CREATE_REQUEST = "CREATE TABLE "+
             TABLE_LESSON+ " ("
-            + COL_ID + "INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + COL_NAME + "TEXT NOT NULL, "
-            + COL_TRAINER + "TEXT NOT NULL, "
-            + COL_CATEGORY+ "INTEGER, "
-            + COL_HOURS + "INTEGER"
+            + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COL_NAME + " TEXT NOT NULL, "
+            + COL_TRAINER + " TEXT NOT NULL, "
+            + COL_CATEGORY+ " INTEGER, "
+            + COL_HOURS + " INTEGER"
             +");";
 
     public static final String UPGRADE_REQUEST = "DROP TABLE "+ TABLE_LESSON;
@@ -76,13 +77,15 @@ public class LessonDAO {
         return null;
     }
 
-    private Lesson cursorToLesson(Cursor c){
-        return new Lesson(
+    public Lesson cursorToLesson(Cursor c){
+        Lesson l= new Lesson(
                 c.getString(c.getColumnIndex(COL_NAME)),
                 c.getString(c.getColumnIndex(COL_TRAINER)),
                 c.getString(c.getColumnIndex(COL_CATEGORY)),
                 c.getInt(c.getColumnIndex(COL_HOURS))
         );
+        l.setId(c.getInt(c.getColumnIndex(COL_ID)));
+        return l;
     }
 
     public List<Lesson> getLessons(){
@@ -95,5 +98,14 @@ public class LessonDAO {
             return lessons;
         }
         return null;
+    }
+
+    public void delete (Lesson l){
+        db.delete(TABLE_LESSON,COL_ID +"="+l.getId(),null);
+    }
+
+    public void delete (Cursor c){
+        db.delete(TABLE_LESSON,COL_ID+"="+cursorToLesson(c).getId(),null);
+        Log.d("TEST ID",cursorToLesson(c).toString());
     }
 }

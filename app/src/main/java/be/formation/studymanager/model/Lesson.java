@@ -1,10 +1,12 @@
 package be.formation.studymanager.model;
 
+import java.io.Serializable;
+
 /**
  * Created by student on 10-03-17.
  */
 
-public class Lesson {
+public class Lesson implements Serializable{
     private String name;
     private String trainer;
     private String category;
@@ -22,6 +24,15 @@ public class Lesson {
     }
 
     //region accesors
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getHours() {
         return hours;
     }
