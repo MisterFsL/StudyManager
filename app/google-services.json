@@ -1,35 +1,27 @@
 {
   "project_info": {
-    "project_number": "845599089273",
-    "firebase_url": "https://studymanager-4201b.firebaseio.com",
-    "project_id": "studymanager-4201b",
-    "storage_bucket": "studymanager-4201b.appspot.com"
+    "project_number": "414700696913",
+    "firebase_url": "https://studyproject-fca9b.firebaseio.com",
+    "project_id": "studyproject-fca9b",
+    "storage_bucket": "studyproject-fca9b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:845599089273:android:b426f084bc0d9200",
+        "mobilesdk_app_id": "1:414700696913:android:b426f084bc0d9200",
         "android_client_info": {
           "package_name": "be.formation.studymanager"
         }
       },
       "oauth_client": [
         {
-          "client_id": "845599089273-68lkbiupcvgn44hgsvm61qkg3ndrn17k.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "be.formation.studymanager",
-            "certificate_hash": "f2fe0b9008793a71e5f788e2a1a4c9292927a86b"
-          }
-        },
-        {
-          "client_id": "845599089273-s9i7d9rd70k30e7dunm2lha75co1s8ch.apps.googleusercontent.com",
+          "client_id": "414700696913-cfb5moduf0veb4820pu6emehhkgrrsbi.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBIX0ipPSj2KiE5G5OsXzwcbSp7mchHKZA"
+          "current_key": "AIzaSyABO05T40W4LkObthHYa_B7QPLYmbloge8"
         }
       ],
       "services": {
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "845599089273-s9i7d9rd70k30e7dunm2lha75co1s8ch.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

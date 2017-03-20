@@ -1,5 +1,7 @@
 package be.formation.studymanager.model;
 
+import android.location.Location;
+
 import java.io.Serializable;
 
 /**
@@ -12,6 +14,7 @@ public class Lesson implements Serializable{
     private String category;
     private int id;
     private int hours;
+    private Location location;
 
     public Lesson() {
     }
