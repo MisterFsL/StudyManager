@@ -28,7 +28,7 @@ public class LessonDAO {
             + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COL_NAME + " TEXT NOT NULL, "
             + COL_TRAINER + " TEXT NOT NULL, "
-            + COL_CATEGORY+ " INTEGER, "
+            + COL_CATEGORY+ " TEXT, "
             + COL_HOURS + " INTEGER"
             +");";
 
@@ -82,7 +82,8 @@ public class LessonDAO {
                 c.getString(c.getColumnIndex(COL_NAME)),
                 c.getString(c.getColumnIndex(COL_TRAINER)),
                 c.getString(c.getColumnIndex(COL_CATEGORY)),
-                c.getInt(c.getColumnIndex(COL_HOURS))
+                c.getInt(c.getColumnIndex(COL_HOURS)
+                        )
         );
         l.setId(c.getInt(c.getColumnIndex(COL_ID)));
         return l;

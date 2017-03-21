@@ -2,6 +2,8 @@ package be.formation.studymanager.model;
 
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 
 /**
@@ -14,7 +16,7 @@ public class Lesson implements Serializable{
     private String category;
     private int id;
     private int hours;
-    private Location location;
+    private LatLng location;
 
     public Lesson() {
     }
@@ -27,6 +29,15 @@ public class Lesson implements Serializable{
     }
 
     //region accesors
+
+
+    public LatLng getLocation() {
+        return location;
+    }
+
+    public void setLocation(LatLng location) {
+        this.location = location;
+    }
 
     public int getId() {
         return id;

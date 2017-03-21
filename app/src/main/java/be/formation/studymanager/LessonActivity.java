@@ -2,6 +2,7 @@ package be.formation.studymanager;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +34,7 @@ public class LessonActivity extends AppCompatActivity implements View.OnClickLis
         btnUpdate.setOnClickListener(this);
 
         lesson= (Lesson) getIntent().getExtras().get("lesson");
+        Log.d("TAG",lesson.toString());
         tvName.setText(lesson.getName());
         tvTrainer.setText(lesson.getTrainer());
         tvHours.setText(String.valueOf(lesson.getHours()));

@@ -17,11 +17,15 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -32,12 +36,12 @@ import java.util.List;
 import be.formation.studymanager.db.LessonDAO;
 import be.formation.studymanager.model.Lesson;
 
-public class AddLessonActivity extends AppCompatActivity implements View.OnClickListener,Validator.ValidationListener,
-        OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class AddLessonActivity extends AppCompatActivity implements View.OnClickListener, Validator.ValidationListener,
+        OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMapClickListener
+,LocationListener{
 
     @NotEmpty
     private EditText etName;
-    @NotEmpty
     private EditText etCategory;
     @NotEmpty
     private EditText etHours;
@@ -47,76 +51,105 @@ public class AddLessonActivity extends AppCompatActivity implements View.OnClick
     private Button btnCancel;
     private Validator validator;
     private MapFragment mapFragment;
-    private AddLessonCallback callback;
-    private final int MY_PERMISSIONS_REQUEST_LOCATION=999;
+    private final int MY_PERMISSIONS_REQUEST_LOCATION = 999;
     private GoogleMap googleMap;
     private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
+    private Marker marker;
+    private LatLng locationLesson;
+    private LocationRequest mLocationRequest;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        this.googleMap =googleMap;
-        if (mLastLocation != null) {
-            Toast.makeText(this, "" + mLastLocation.getLatitude() + "  " + mLastLocation.getLongitude(),
-                    Toast.LENGTH_SHORT).show();
-            addMarker(mLastLocation);
-        }
+        this.googleMap = googleMap;
+        googleMap.setOnMapClickListener(this);
+        marker = googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(0, 0)));
+        marker.setVisible(false);
+        createLocationRequest();
+        Log.d("TAG", "MAPREADY");
     }
 
-    private void addMarker(Location loc){
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(loc.getLatitude(),loc.getLongitude()))
-                .title("Your position"));
+    private void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(5000);
+        mLocationRequest.setFastestInterval(2000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
-    private void checkLocation(){
-        Log.d("MAP","CHECKLOC");
+    protected void startLocationUpdates() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                    mGoogleApiClient);
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
+            Log.d("MAP", "LASTLOCATION OK");
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_LOCATION);
         }
     }
 
+    private void moveMarker(LatLng latLng) {
+        marker.setPosition(latLng);
+        locationLesson=latLng;
+        marker.setVisible(true);
+    }
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Log.d("MAP","NOICE");
-        checkLocation();
-        if (googleMap != null && mLastLocation!=null) {
-            Toast.makeText(this, "" + mLastLocation.getLatitude() + "  " + mLastLocation.getLongitude(),
-                    Toast.LENGTH_SHORT).show();
-            addMarker(mLastLocation);
-        };
+        Log.d("MAP", "NOICE");
+        startLocationUpdates();
+
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.d("MAP","SUSP");
+        Log.d("MAP", "SUSP");
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d("MAP","FAILED");
+        Log.d("MAP", "FAILED");
     }
 
-    public interface AddLessonCallback{
+    @Override
+    public void onMapClick(LatLng latLng) {
+        moveMarker(latLng);
+
+    }
+
+    private void moveCameraToLocation(LatLng location)
+    {
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,15));
+        // Zoom in, animating the camera.
+        googleMap.animateCamera(CameraUpdateFactory.zoomIn());
+        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        moveMarker(new LatLng(location.getLatitude(),location.getLongitude()));
+        moveCameraToLocation(new LatLng(location.getLatitude(),location.getLongitude()));
+        Log.d("MAP","CHANGED");
+    }
+
+    public interface AddLessonCallback {
         void updateFromAddLesson();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("MAP","CREATE");
+        Log.d("MAP", "CREATE");
         setContentView(R.layout.activity_add_lesson);
-        etName= (EditText) findViewById(R.id.et_add_name);
+        etName = (EditText) findViewById(R.id.et_add_name);
         etCategory = (EditText) findViewById(R.id.et_add_category);
         etHours = (EditText) findViewById(R.id.et_add_hours);
-        etTrainer= (EditText) findViewById(R.id.et_add_trainer);
-        btnAdd= (Button) findViewById(R.id.btn_add_activity_add);
-        btnCancel= (Button) findViewById(R.id.btn_add_cancel);
+        etTrainer = (EditText) findViewById(R.id.et_add_trainer);
+        btnAdd = (Button) findViewById(R.id.btn_add_activity_add);
+        btnCancel = (Button) findViewById(R.id.btn_add_cancel);
 
         mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.mf_map_lesson);
@@ -125,7 +158,7 @@ public class AddLessonActivity extends AppCompatActivity implements View.OnClick
         btnCancel.setOnClickListener(this);
         btnAdd.setOnClickListener(this);
 
-        validator= new Validator(this);
+        validator = new Validator(this);
         validator.setValidationListener(this);
 
         if (mGoogleApiClient == null) {
@@ -142,7 +175,7 @@ public class AddLessonActivity extends AppCompatActivity implements View.OnClick
         if (requestCode == MY_PERMISSIONS_REQUEST_LOCATION) {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
-                checkLocation();
+                startLocationUpdates();
             } else {
                 // Permission was denied. Display an error message.
             }
@@ -151,7 +184,7 @@ public class AddLessonActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_add_cancel:
                 finish();
                 break;
@@ -163,12 +196,15 @@ public class AddLessonActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onValidationSucceeded() {
-        LessonDAO lessonDAO=new LessonDAO(this);
+        LessonDAO lessonDAO = new LessonDAO(this);
         lessonDAO.openWritable();
-        lessonDAO.insert(new Lesson(etName.getText().toString(),
+        Lesson l =new Lesson(etName.getText().toString(),
                 etTrainer.getText().toString(),
                 etCategory.getText().toString(),
-                Integer.parseInt(etHours.getText().toString())));
+                Integer.parseInt(etHours.getText().toString())
+                );
+        l.setLocation(locationLesson);
+        lessonDAO.insert(l);
         lessonDAO.close();
         finish();
     }
