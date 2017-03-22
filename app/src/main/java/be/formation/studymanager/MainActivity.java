@@ -96,14 +96,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onStop() {
-        mAuth.signOut();
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
         super.onStop();
     }
 
-    public void createAccount(String email,String password){
+    @Override
+    protected void onDestroy() {
+        mAuth.signOut();
+        super.onDestroy();
+    }
+
+    public void createAccount(String email, String password){
         //TODO Check mail & adress
         validator.validate();
         if(validate) {

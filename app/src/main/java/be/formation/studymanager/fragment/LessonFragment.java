@@ -67,8 +67,6 @@ public class LessonFragment extends Fragment implements AddLessonActivity.AddLes
         });
 
 
-        myRef= FirebaseDatabase.getInstance().getReference("Lesson");
-
 
         updateList();
         return v;

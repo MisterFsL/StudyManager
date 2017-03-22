@@ -7,11 +7,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import be.formation.studymanager.db.LessonDAO;
 import be.formation.studymanager.model.Lesson;
 
-public class LessonActivity extends AppCompatActivity implements View.OnClickListener{
+public class LessonActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
 
     private TextView tvName;
     private TextView tvTrainer;
@@ -19,6 +28,7 @@ public class LessonActivity extends AppCompatActivity implements View.OnClickLis
     private Button btnDelete;
     private Button btnUpdate;
     private Lesson lesson;
+    private MapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +40,10 @@ public class LessonActivity extends AppCompatActivity implements View.OnClickLis
         btnDelete = (Button) findViewById(R.id.btn_lesson_delete);
         btnUpdate = (Button) findViewById(R.id.btn_lesson_update);
 
+        mapFragment = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.mf_detail_location);
+        mapFragment.getMapAsync(this);
+
         btnDelete.setOnClickListener(this);
         btnUpdate.setOnClickListener(this);
 
@@ -39,6 +53,8 @@ public class LessonActivity extends AppCompatActivity implements View.OnClickLis
         tvTrainer.setText(lesson.getTrainer());
         tvHours.setText(String.valueOf(lesson.getHours()));
     }
+
+
 
     @Override
     public void onClick(View v) {
@@ -53,6 +69,19 @@ public class LessonActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.btn_lesson_update:
                 finish();
                 break;
+        }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        if(lesson.getLatitude()!=0 || lesson.getLongitude()!=0){
+            googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(lesson.getLatitude(),lesson.getLongitude()))
+                    .title(lesson.getName()));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(lesson.getLatitude(),lesson.getLongitude()), 15));
+            googleMap.animateCamera(CameraUpdateFactory.zoomIn());
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
         }
     }
 }

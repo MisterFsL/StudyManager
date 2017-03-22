@@ -38,7 +38,7 @@ import be.formation.studymanager.model.Lesson;
 
 public class AddLessonActivity extends AppCompatActivity implements View.OnClickListener, Validator.ValidationListener,
         OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMapClickListener
-,LocationListener{
+        , LocationListener {
 
     @NotEmpty
     private EditText etName;
@@ -74,13 +74,14 @@ public class AddLessonActivity extends AppCompatActivity implements View.OnClick
         mLocationRequest.setInterval(5000);
         mLocationRequest.setFastestInterval(2000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setNumUpdates(1);
     }
 
     protected void startLocationUpdates() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mLocationRequest, this);
             Log.d("MAP", "LASTLOCATION OK");
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -90,7 +91,7 @@ public class AddLessonActivity extends AppCompatActivity implements View.OnClick
 
     private void moveMarker(LatLng latLng) {
         marker.setPosition(latLng);
-        locationLesson=latLng;
+        locationLesson = latLng;
         marker.setVisible(true);
     }
 
@@ -117,9 +118,8 @@ public class AddLessonActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    private void moveCameraToLocation(LatLng location)
-    {
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,15));
+    private void moveCameraToLocation(LatLng location) {
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
         // Zoom in, animating the camera.
         googleMap.animateCamera(CameraUpdateFactory.zoomIn());
         // Zoom out to zoom level 10, animating with a duration of 2 seconds.
@@ -130,9 +130,9 @@ public class AddLessonActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onLocationChanged(Location location) {
-        moveMarker(new LatLng(location.getLatitude(),location.getLongitude()));
-        moveCameraToLocation(new LatLng(location.getLatitude(),location.getLongitude()));
-        Log.d("MAP","CHANGED");
+        moveMarker(new LatLng(location.getLatitude(), location.getLongitude()));
+        moveCameraToLocation(new LatLng(location.getLatitude(), location.getLongitude()));
+        Log.d("MAP", "CHANGED");
     }
 
     public interface AddLessonCallback {
@@ -198,12 +198,15 @@ public class AddLessonActivity extends AppCompatActivity implements View.OnClick
     public void onValidationSucceeded() {
         LessonDAO lessonDAO = new LessonDAO(this);
         lessonDAO.openWritable();
-        Lesson l =new Lesson(etName.getText().toString(),
+        Lesson l = new Lesson(etName.getText().toString(),
                 etTrainer.getText().toString(),
                 etCategory.getText().toString(),
                 Integer.parseInt(etHours.getText().toString())
-                );
-        l.setLocation(locationLesson);
+        );
+        if (locationLesson != null) {
+            l.setLatitude(locationLesson.latitude);
+            l.setLongitude(locationLesson.longitude);
+        }
         lessonDAO.insert(l);
         lessonDAO.close();
         finish();

@@ -16,7 +16,8 @@ public class Lesson implements Serializable{
     private String category;
     private int id;
     private int hours;
-    private LatLng location;
+    private double latitude;
+    private double longitude;
 
     public Lesson() {
     }
@@ -31,12 +32,20 @@ public class Lesson implements Serializable{
     //region accesors
 
 
-    public LatLng getLocation() {
-        return location;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setLocation(LatLng location) {
-        this.location = location;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public int getId() {
@@ -79,6 +88,8 @@ public class Lesson implements Serializable{
         this.name = name;
     }
     //endregion
+
+
 
 
     @Override
