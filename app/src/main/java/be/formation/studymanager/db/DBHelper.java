@@ -26,7 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(LessonDAO.UPGRADE_REQUEST);
-
+        db.execSQL(UserLessonDAO.UPGRADE_REQUEST);
         onCreate(db);
     }
 }

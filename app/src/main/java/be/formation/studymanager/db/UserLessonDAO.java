@@ -15,4 +15,5 @@ public class UserLessonDAO {
             + "PRIMARY KEY("+COL_USER_ID+","+COL_LESSON_ID+")"
             +");";
 
+    public static final String UPGRADE_REQUEST = "DROP TABLE "+ TABLE_USER_LESSON;
 }
