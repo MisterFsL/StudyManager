@@ -33,6 +33,7 @@ public class LessonDAO {
     public static final String COL_LATITUDE = "latitude";
 
     private FirebaseDatabase root;
+    private StudyApplication app;
 
     public static final String CREATE_REQUEST = "CREATE TABLE "+
             TABLE_LESSON+ " ("
@@ -53,6 +54,7 @@ public class LessonDAO {
 
     public LessonDAO(Context context){
         this.context=context;
+        app = (StudyApplication) context.getApplicationContext();
         root=FirebaseDatabase.getInstance();
     }
 
@@ -81,17 +83,15 @@ public class LessonDAO {
         cv.put(COL_HOURS,lesson.getHours());
         cv.put(COL_LATITUDE,lesson.getLatitude());
         cv.put(COL_LONGITUDE,lesson.getLongitude());
-        Map<String,Lesson> mapLesson= new HashMap<>();
-        StudyApplication app = (StudyApplication) context.getApplicationContext();
-        if(app.getUserId()!=null) {
 
-            Toast.makeText(context, app.userId, Toast.LENGTH_SHORT).show();
-            mapLesson.put(FirebaseAuth.getInstance().getCurrentUser().getUid(), lesson);
-            root.getReference("lesson").setValue(mapLesson);
+        long id = db.insert(TABLE_LESSON,null,cv);
+        if(app.getUserId()!=null) {
+            Toast.makeText(context," ID = "+ id, Toast.LENGTH_SHORT).show();
+            root.getReference(TABLE_LESSON).child(""+id).setValue(lesson);
         }else {
             Toast.makeText(context, "NO USER", Toast.LENGTH_SHORT).show();
         }
-        return db.insert(TABLE_LESSON,null,cv);
+        return id;
     }
 
     public Cursor getLessonCursor(){
@@ -131,10 +131,14 @@ public class LessonDAO {
 
     public void delete (Lesson l){
         db.delete(TABLE_LESSON,COL_ID +"="+l.getId(),null);
+        root.getReference(TABLE_LESSON).child(""+l.getId()).removeValue();
     }
 
     public void delete (Cursor c){
         db.delete(TABLE_LESSON,COL_ID+"="+cursorToLesson(c).getId(),null);
+
+        //TODO DELETE ONLY RELATION
+        root.getReference(TABLE_LESSON).child(""+cursorToLesson(c).getId()).removeValue();
         Log.d("TEST ID",cursorToLesson(c).toString());
     }
 }

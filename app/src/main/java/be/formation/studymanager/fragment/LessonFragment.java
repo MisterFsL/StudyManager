@@ -6,27 +6,19 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
 
 import be.formation.studymanager.AddLessonActivity;
 import be.formation.studymanager.LessonActivity;
 import be.formation.studymanager.R;
 import be.formation.studymanager.db.LessonDAO;
-import be.formation.studymanager.db.UserDAO;
-import be.formation.studymanager.model.Lesson;
 
 /**
  * A simple {@link Fragment} subclass.
