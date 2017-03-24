@@ -51,9 +51,11 @@ public class LessonDAO {
     private DBHelper dbHelper;
     private Context context;
     private SQLiteDatabase db;
+    private UserLessonDAO userLessonDAO;
 
     public LessonDAO(Context context){
         this.context=context;
+        userLessonDAO = new UserLessonDAO(context);
         app = (StudyApplication) context.getApplicationContext();
         root=FirebaseDatabase.getInstance();
     }
@@ -85,9 +87,12 @@ public class LessonDAO {
         cv.put(COL_LONGITUDE,lesson.getLongitude());
 
         long id = db.insert(TABLE_LESSON,null,cv);
+        root.getReference(TABLE_LESSON).child(""+id).setValue(lesson);
         if(app.getUserId()!=null) {
             Toast.makeText(context," ID = "+ id, Toast.LENGTH_SHORT).show();
-            root.getReference(TABLE_LESSON).child(""+id).setValue(lesson);
+            userLessonDAO.openWritable();
+            userLessonDAO.insert(app.getUserId(),id);
+            userLessonDAO.close();
         }else {
             Toast.makeText(context, "NO USER", Toast.LENGTH_SHORT).show();
         }
@@ -102,6 +107,8 @@ public class LessonDAO {
         }
         return null;
     }
+
+
 
     public Lesson cursorToLesson(Cursor c){
         Lesson l= new Lesson(

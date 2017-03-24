@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import be.formation.studymanager.AddLessonActivity;
 import be.formation.studymanager.LessonActivity;
 import be.formation.studymanager.R;
+import be.formation.studymanager.StudyApplication;
 import be.formation.studymanager.db.LessonDAO;
+import be.formation.studymanager.db.UserLessonDAO;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,8 +32,9 @@ public class LessonFragment extends Fragment implements AddLessonActivity.AddLes
     private ListView lvLessons;
     private static  LessonFragment instance;
     private FloatingActionButton btnAdd;
-    private DatabaseReference myRef;
     private LessonDAO lessonDAO;
+    private UserLessonDAO userLessonDAO;
+    private StudyApplication app;
 
     public LessonFragment() {
     }
@@ -50,6 +54,8 @@ public class LessonFragment extends Fragment implements AddLessonActivity.AddLes
         lvLessons.setOnItemClickListener(this);
         btnAdd = (FloatingActionButton) v.findViewById(R.id.btn_add);
         lessonDAO = new LessonDAO(this.getContext());
+        userLessonDAO = new UserLessonDAO(this.getContext());
+        app = (StudyApplication) getActivity().getApplication();
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,15 +71,15 @@ public class LessonFragment extends Fragment implements AddLessonActivity.AddLes
     }
 
     private void updateList(){
-        lessonDAO.openReadable();
+        userLessonDAO.openReadable();
         String[] from = new String[]{LessonDAO.COL_NAME, LessonDAO.COL_TRAINER};
         SimpleCursorAdapter adapter= new SimpleCursorAdapter(this.getContext(),
                 R.layout.list_entry,
-                lessonDAO.getLessonCursor(),
+                userLessonDAO.getLessonByUserId(app.getUserId()),
                 from, new int[]{R.id.tv_name, R.id.tv_id}
                 );
-        lessonDAO.close();
         lvLessons.setAdapter(adapter);
+        userLessonDAO.close();
     }
 
     @Override

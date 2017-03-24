@@ -25,6 +25,7 @@ public class LessonActivity extends AppCompatActivity implements View.OnClickLis
     private TextView tvName;
     private TextView tvTrainer;
     private TextView tvHours;
+    private TextView tvIdLesson;
     private Button btnDelete;
     private Button btnUpdate;
     private Lesson lesson;
@@ -36,6 +37,7 @@ public class LessonActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_lesson);
         tvHours = (TextView) findViewById(R.id.tv_lesson_hours);
         tvName = (TextView) findViewById(R.id.tv_lesson_name);
+        tvIdLesson = (TextView) findViewById(R.id.tv_id_lesson);
         tvTrainer = (TextView) findViewById(R.id.tv_lesson_trainer);
         btnDelete = (Button) findViewById(R.id.btn_lesson_delete);
         btnUpdate = (Button) findViewById(R.id.btn_lesson_update);
@@ -52,6 +54,7 @@ public class LessonActivity extends AppCompatActivity implements View.OnClickLis
         tvName.setText(lesson.getName());
         tvTrainer.setText(lesson.getTrainer());
         tvHours.setText(String.valueOf(lesson.getHours()));
+        tvIdLesson.setText(String.valueOf(lesson.getId()));
     }
 
 

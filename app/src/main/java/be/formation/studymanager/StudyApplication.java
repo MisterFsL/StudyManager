@@ -15,5 +15,5 @@ public class StudyApplication extends Application {
         this.userId = userId;
     }
 
-    public String userId;
+    private String userId;
 }
