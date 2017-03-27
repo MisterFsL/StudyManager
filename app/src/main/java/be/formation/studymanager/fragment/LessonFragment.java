@@ -23,9 +23,7 @@ import be.formation.studymanager.StudyApplication;
 import be.formation.studymanager.db.LessonDAO;
 import be.formation.studymanager.db.UserLessonDAO;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class LessonFragment extends Fragment implements AddLessonActivity.AddLessonCallback,AdapterView.OnItemClickListener {
 
 

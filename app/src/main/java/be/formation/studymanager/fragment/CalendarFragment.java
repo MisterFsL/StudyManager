@@ -13,9 +13,7 @@ import android.widget.ImageView;
 import be.formation.studymanager.R;
 import be.formation.studymanager.task.LoadTask;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class CalendarFragment extends Fragment implements LoadTask.LoadTaskCallback{
 
     private static CalendarFragment instance;

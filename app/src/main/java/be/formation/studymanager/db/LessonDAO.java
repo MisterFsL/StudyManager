@@ -18,9 +18,6 @@ import java.util.Map;
 import be.formation.studymanager.StudyApplication;
 import be.formation.studymanager.model.Lesson;
 
-/**
- * Created by student on 10-03-17.
- */
 
 public class LessonDAO {
     public static final String TABLE_LESSON = "lesson";

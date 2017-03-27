@@ -10,9 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import be.formation.studymanager.StudyApplication;
 import be.formation.studymanager.model.Lesson;
 
-/**
- * Created by student on 10-03-17.
- */
+
 
 public class UserLessonDAO {
     public static final String COL_USER_LESSON_ID = "_id";

@@ -8,9 +8,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by student on 20-03-17.
- */
 
 public class LoadTask extends AsyncTask<String,Void,Bitmap> {
 

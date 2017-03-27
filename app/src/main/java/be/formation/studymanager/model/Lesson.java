@@ -6,9 +6,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
 
-/**
- * Created by student on 10-03-17.
- */
+
 
 public class Lesson implements Serializable{
     private String name;
