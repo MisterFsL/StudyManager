@@ -14,7 +14,8 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyABO05T40W4LkObthHYa_B7QPLYmbloge8"/>
+            android:value="AIzaSyABO05T40W4LkObthHYa_B7QPLYmbloge8" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +25,8 @@
         </activity>
         <activity android:name=".MenuActivity" />
         <activity android:name=".AddLessonActivity" />
-        <activity android:name=".LessonActivity"></activity>
+        <activity android:name=".LessonActivity" />
+        <activity android:name=".AllLessonsActivity"></activity>
     </application>
 
 </manifest>

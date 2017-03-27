@@ -27,7 +27,6 @@ public class LessonActivity extends AppCompatActivity implements View.OnClickLis
     private TextView tvHours;
     private TextView tvIdLesson;
     private Button btnDelete;
-    private Button btnUpdate;
     private Lesson lesson;
     private MapFragment mapFragment;
 
@@ -40,14 +39,12 @@ public class LessonActivity extends AppCompatActivity implements View.OnClickLis
         tvIdLesson = (TextView) findViewById(R.id.tv_id_lesson);
         tvTrainer = (TextView) findViewById(R.id.tv_lesson_trainer);
         btnDelete = (Button) findViewById(R.id.btn_lesson_delete);
-        btnUpdate = (Button) findViewById(R.id.btn_lesson_update);
 
         mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.mf_detail_location);
         mapFragment.getMapAsync(this);
 
         btnDelete.setOnClickListener(this);
-        btnUpdate.setOnClickListener(this);
 
         lesson= (Lesson) getIntent().getExtras().get("lesson");
         Log.d("TAG",lesson.toString());
@@ -67,9 +64,6 @@ public class LessonActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.btn_lesson_delete:
                 lessonDAO.delete(lesson);
                 lessonDAO.close();
-                finish();
-                break;
-            case R.id.btn_lesson_update:
                 finish();
                 break;
         }

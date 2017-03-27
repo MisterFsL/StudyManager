@@ -14,7 +14,9 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.roomorama.caldroid.CaldroidFragment;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
 
@@ -40,7 +42,14 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         List fragments = new Vector();
 
         fragments.add(LessonFragment.getInstance());
-        fragments.add(CalendarFragment.getInstance());
+        CaldroidFragment caldroidFragment = new CaldroidFragment();
+        Bundle args = new Bundle();
+        Calendar cal = Calendar.getInstance();
+        args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
+        args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
+        args.putInt(CaldroidFragment.THEME_RESOURCE, com.caldroid.R.style.CaldroidDefaultDark);
+        caldroidFragment.setArguments(args);
+        fragments.add(caldroidFragment);
 
         adapter = new StudyPagerAdapter(getSupportFragmentManager(), fragments);
 

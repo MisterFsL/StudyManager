@@ -108,6 +108,6 @@
         android:layout_below="@+id/btn_add_activity_add"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="12dp"
-        android:id="@+id/button2" />
+        android:id="@+id/btn_select_from" />
 
 </RelativeLayout>

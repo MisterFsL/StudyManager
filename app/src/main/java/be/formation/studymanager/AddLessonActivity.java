@@ -1,6 +1,7 @@
 package be.formation.studymanager;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -49,6 +50,7 @@ public class AddLessonActivity extends AppCompatActivity implements View.OnClick
     private EditText etTrainer;
     private Button btnAdd;
     private Button btnCancel;
+    private Button btnSelectFrom;
     private Validator validator;
     private MapFragment mapFragment;
     private final int MY_PERMISSIONS_REQUEST_LOCATION = 999;
@@ -57,6 +59,7 @@ public class AddLessonActivity extends AppCompatActivity implements View.OnClick
     private Marker marker;
     private LatLng locationLesson;
     private LocationRequest mLocationRequest;
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -150,6 +153,7 @@ public class AddLessonActivity extends AppCompatActivity implements View.OnClick
         etTrainer = (EditText) findViewById(R.id.et_add_trainer);
         btnAdd = (Button) findViewById(R.id.btn_add_activity_add);
         btnCancel = (Button) findViewById(R.id.btn_add_cancel);
+        btnSelectFrom = (Button) findViewById(R.id.btn_select_from);
 
         mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.mf_map_lesson);
@@ -157,6 +161,7 @@ public class AddLessonActivity extends AppCompatActivity implements View.OnClick
 
         btnCancel.setOnClickListener(this);
         btnAdd.setOnClickListener(this);
+        btnSelectFrom.setOnClickListener(this);
 
         validator = new Validator(this);
         validator.setValidationListener(this);
@@ -190,6 +195,10 @@ public class AddLessonActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.btn_add_activity_add:
                 validator.validate();
+                break;
+            case R.id.btn_select_from:
+                startActivity(new Intent(this,AllLessonsActivity.class));
+                finish();
                 break;
         }
     }

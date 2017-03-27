@@ -20,7 +20,7 @@
         android:textStyle="normal|bold" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_lesson_trainer"
         android:layout_alignLeft="@+id/tv_lesson_trainer"
@@ -29,39 +29,14 @@
         android:textSize="18sp"
         android:textColor="@android:color/white" />
 
-    <Button
-        android:text="@string/delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/btn_lesson_update"
-        android:layout_toRightOf="@+id/tv_lesson_name"
-        android:layout_toEndOf="@+id/tv_lesson_name"
-        android:layout_marginLeft="23dp"
-        android:layout_marginStart="23dp"
-        android:id="@+id/btn_lesson_delete" />
-
-    <Button
-        android:text="@string/update"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="43dp"
-        android:id="@+id/btn_lesson_update"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/btn_lesson_delete"
-        android:layout_toStartOf="@+id/btn_lesson_delete" />
-
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
         android:id="@+id/tv_lesson_trainer"
         android:textSize="18sp"
         android:textColor="@android:color/white"
-        android:layout_below="@+id/tv_lesson_name"
-        android:layout_alignLeft="@+id/btn_lesson_update"
-        android:layout_alignStart="@+id/btn_lesson_update" />
+        android:layout_below="@+id/tv_lesson_name" />
 
     <fragment
         android:name="com.google.android.gms.maps.MapFragment"
@@ -83,4 +58,13 @@
         android:layout_marginRight="24dp"
         android:layout_marginEnd="24dp"
         android:id="@+id/tv_id_lesson" />
+
+    <Button
+        android:text="@string/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_lesson_delete"
+        android:layout_marginBottom="49dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
