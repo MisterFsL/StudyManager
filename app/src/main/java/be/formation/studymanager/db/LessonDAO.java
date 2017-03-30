@@ -86,12 +86,9 @@ public class LessonDAO {
         long id = db.insert(TABLE_LESSON,null,cv);
         root.getReference(TABLE_LESSON).child(""+id).setValue(lesson);
         if(app.getUserId()!=null) {
-            Toast.makeText(context," ID = "+ id, Toast.LENGTH_SHORT).show();
             userLessonDAO.openWritable();
             userLessonDAO.insert(app.getUserId(),id);
             userLessonDAO.close();
-        }else {
-            Toast.makeText(context, "NO USER", Toast.LENGTH_SHORT).show();
         }
         return id;
     }
@@ -140,9 +137,6 @@ public class LessonDAO {
 
     public void delete (Cursor c){
         db.delete(TABLE_LESSON,COL_ID+"="+cursorToLesson(c).getId(),null);
-
-        //TODO DELETE ONLY RELATION
         root.getReference(TABLE_LESSON).child(""+cursorToLesson(c).getId()).removeValue();
-        Log.d("TEST ID",cursorToLesson(c).toString());
     }
 }

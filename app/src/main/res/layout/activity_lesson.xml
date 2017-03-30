@@ -67,4 +67,17 @@
         android:layout_marginBottom="49dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/tv_lesson_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_lesson_hours"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="21dp"
+        android:text="TextView" />
+
 </RelativeLayout>

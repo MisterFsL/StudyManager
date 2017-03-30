@@ -108,8 +108,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onDestroy();
     }
 
+    //create account & sign in via firebase
     public void createAccount(String email, String password){
-        //TODO Check mail & adress
         validator.validate();
         if(validate) {
             startLoading();
@@ -120,9 +120,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             endLoading();
                             Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
-                            // If sign in fails, display a message to the user. If sign in succeeds
-                            // the auth state listener will be notified and logic to handle the
-                            // signed in user can be handled in the listener.
                             if (!task.isSuccessful()) {
 
                                 Log.w(TAG, "createWith", task.getException());
@@ -135,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //sign in via firebase
     public void signIn(String email,String password){
         validator.validate();
         if(validate) {
@@ -161,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //if remember me checked this method keeps the ids
     private void savePreferences(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(
                 getApplicationContext());

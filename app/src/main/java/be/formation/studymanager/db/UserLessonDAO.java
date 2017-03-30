@@ -66,4 +66,9 @@ public class UserLessonDAO {
                 + " WHERE "+COL_USER_ID+"= '"+userId+"'";
         return db.rawQuery(QUERY,null);
     }
+
+    public void deleteLessonById(String userId,Lesson l){
+        db.delete(TABLE_USER_LESSON,COL_LESSON_ID +"="+l.getId()+" and "+
+                COL_USER_ID+"='"+userId+"'",null);
+    }
 }

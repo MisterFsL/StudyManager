@@ -68,6 +68,9 @@ public class LessonFragment extends Fragment implements AddLessonActivity.AddLes
         return v;
     }
 
+    /*
+        Get lessons from bd by userID
+     */
     private void updateList(){
         userLessonDAO.openReadable();
         String[] from = new String[]{LessonDAO.COL_NAME, LessonDAO.COL_TRAINER};

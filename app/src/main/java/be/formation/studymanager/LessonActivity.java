@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import be.formation.studymanager.db.LessonDAO;
+import be.formation.studymanager.db.UserLessonDAO;
 import be.formation.studymanager.model.Lesson;
 
 public class LessonActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
@@ -26,9 +27,11 @@ public class LessonActivity extends AppCompatActivity implements View.OnClickLis
     private TextView tvTrainer;
     private TextView tvHours;
     private TextView tvIdLesson;
+    private TextView tvLessonCategory;
     private Button btnDelete;
     private Lesson lesson;
     private MapFragment mapFragment;
+    private StudyApplication app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,8 @@ public class LessonActivity extends AppCompatActivity implements View.OnClickLis
         tvIdLesson = (TextView) findViewById(R.id.tv_id_lesson);
         tvTrainer = (TextView) findViewById(R.id.tv_lesson_trainer);
         btnDelete = (Button) findViewById(R.id.btn_lesson_delete);
+        tvLessonCategory = (TextView) findViewById(R.id.tv_lesson_category);
+        app = (StudyApplication) getApplication();
 
         mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.mf_detail_location);
@@ -52,18 +57,19 @@ public class LessonActivity extends AppCompatActivity implements View.OnClickLis
         tvTrainer.setText(lesson.getTrainer());
         tvHours.setText(String.valueOf(lesson.getHours()));
         tvIdLesson.setText(String.valueOf(lesson.getId()));
+        tvLessonCategory.setText(lesson.getCategory());
     }
 
 
 
     @Override
     public void onClick(View v) {
-        LessonDAO lessonDAO = new LessonDAO(this);
-        lessonDAO.openWritable();
+        UserLessonDAO userLessonDAO= new UserLessonDAO(this);
+        userLessonDAO.openWritable();
         switch (v.getId()){
             case R.id.btn_lesson_delete:
-                lessonDAO.delete(lesson);
-                lessonDAO.close();
+                userLessonDAO.deleteLessonById(app.getUserId(),lesson);
+                userLessonDAO.close();
                 finish();
                 break;
         }
